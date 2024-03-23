@@ -1,0 +1,5 @@
+ALTER TABLE course
+    ADD name VARCHAR(255) NULL;
+
+ALTER TABLE course
+    MODIFY name VARCHAR(255) NOT NULL;
