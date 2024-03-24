@@ -13,4 +13,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Page<Course> findAllByStatus(Status status, Pageable pageable);
 
     Optional<Course> findByCode(String code);
+
+    Optional<Course> findCourseByStatusAndCode(Status status, String code);
 }
