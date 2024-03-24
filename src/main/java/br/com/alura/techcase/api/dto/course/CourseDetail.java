@@ -2,8 +2,7 @@ package br.com.alura.techcase.api.dto.course;
 
 import br.com.alura.techcase.api.dto.user.UserDetail;
 import br.com.alura.techcase.api.model.Course;
-
-import java.util.Date;
+import br.com.alura.techcase.core.utils.SiteUtil;
 
 public record CourseDetail(
         String name,
@@ -11,10 +10,10 @@ public record CourseDetail(
         UserDetail instructor,
         String status,
         String description,
-        Date creationDate,
-        Date inactivationDate
+        String creationDate,
+        String inactivationDate
 ) {
     public CourseDetail(Course course) {
-        this(course.getName(), course.getCode(), new UserDetail(course.getInstructor()), course.getStatus().name(), course.getDescription(), course.getCreationDate(), course.getInactivationDate());
+        this(course.getName(), course.getCode(), new UserDetail(course.getInstructor()), course.getStatus().name(), course.getDescription(), SiteUtil.formatDate(course.getCreationDate()), SiteUtil.formatDate(course.getInactivationDate()));
     }
 }

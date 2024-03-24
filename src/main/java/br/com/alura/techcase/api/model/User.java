@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -36,7 +36,7 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     public User(CreateUserForm form) {
         this.username = form.username();
@@ -44,7 +44,7 @@ public class User {
         this.email = form.email();
         this.role = setRoleByString(form.role());
         this.password = form.password();
-        this.creationDate = new Date();
+        this.creationDate = LocalDate.now();
     }
 
     @Override

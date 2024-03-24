@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -36,8 +36,8 @@ public class Course {
     private Status status;
 
     @Column(nullable = false)
-    private Date creationDate;
-    private Date inactivationDate;
+    private LocalDate creationDate;
+    private LocalDate inactivationDate;
 
     public Course(CreateCourseForm form, User instrutor) {
         this.name = form.name();
@@ -45,7 +45,7 @@ public class Course {
         this.instructor = instrutor;
         this.description = form.description();
         this.status = Status.ACTIVE;
-        this.creationDate = new Date();
+        this.creationDate = LocalDate.now();
         this.inactivationDate = null;
     }
 

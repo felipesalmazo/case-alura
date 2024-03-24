@@ -1,6 +1,6 @@
 package br.com.alura.techcase.core.exception.handler;
 
-import org.springframework.dao.DataIntegrityViolationException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,12 +14,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ProjectExceptionHandler {
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        if (ex.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(getErrorMessage(ex.getMostSpecificCause().toString()));
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(ConstraintViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(getErrorMessage(ex.getSQLException().toString()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
