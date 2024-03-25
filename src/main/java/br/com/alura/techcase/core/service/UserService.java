@@ -4,6 +4,7 @@ import br.com.alura.techcase.api.dto.user.CreateUserForm;
 import br.com.alura.techcase.api.model.User;
 import br.com.alura.techcase.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,12 +15,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public Optional<User> getUserByUserName(String username){
       return userRepository.findByUsername(username);
     }
 
     public User createUser(CreateUserForm form) {
-        var user = new User(form);
+        var user = new User(form, encoder);
         return userRepository.save(user);
     }
 }
