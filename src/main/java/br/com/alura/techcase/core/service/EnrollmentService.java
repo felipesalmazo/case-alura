@@ -9,6 +9,7 @@ import br.com.alura.techcase.core.repository.CourseRepository;
 import br.com.alura.techcase.core.repository.EnrollmentRepository;
 import br.com.alura.techcase.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +25,8 @@ public class EnrollmentService {
     private EnrollmentRepository enrollmentRepository;
 
     public Enrollment createEnrollment(CreateEnrollmentForm form) throws NotFoundException, ValidationException {
-        var user = userRepository.findByUsername(form.userUsername()).orElseThrow(() -> new NotFoundException("User with username " + form.userUsername() + " not found."));
+        var userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User with email " + userEmail + " not found."));
         var course = courseRepository.findCourseByStatusAndCode(Status.ACTIVE, form.courseCode()).orElseThrow(() -> new NotFoundException("Course with code " + form.courseCode() + " not found or inactive."));
         var enrollment = enrollmentRepository.findEnrollmentByUserAndCourse(user, course);
 

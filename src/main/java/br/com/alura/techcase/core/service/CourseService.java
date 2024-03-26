@@ -17,6 +17,7 @@ import br.com.alura.techcase.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -67,7 +68,8 @@ public class CourseService {
     }
 
     public CourseAssessment courseAssessment (CourseAssessmentForm form) throws NotFoundException, ValidationException {
-        var user = userRepository.findByUsername(form.userUsername()).orElseThrow(() -> new NotFoundException("User with username " + form.userUsername() + " not found."));
+        var userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User with email " + userEmail + " not found."));
         var course = courseRepository.findCourseByStatusAndCode(Status.ACTIVE, form.courseCode()).orElseThrow(() -> new NotFoundException("Course with code " + form.courseCode() + " not found or inactive."));
         enrollmentRepository.findEnrollmentByUserAndCourse(user, course).orElseThrow(() -> new ValidationException("The user have to be enrolled to the course to do the assessment."));
 
