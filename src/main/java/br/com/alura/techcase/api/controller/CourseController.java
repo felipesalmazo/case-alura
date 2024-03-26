@@ -3,6 +3,7 @@ package br.com.alura.techcase.api.controller;
 import br.com.alura.techcase.api.dto.course.CourseAssessmentForm;
 import br.com.alura.techcase.api.dto.course.CourseDetail;
 import br.com.alura.techcase.api.dto.course.CreateCourseForm;
+import br.com.alura.techcase.api.dto.course.InactivateCourseForm;
 import br.com.alura.techcase.core.exception.NotFoundException;
 import br.com.alura.techcase.core.exception.ValidationException;
 import br.com.alura.techcase.core.service.CourseService;
@@ -49,8 +50,8 @@ public class CourseController {
     }
 
     @PutMapping("/inactivate")
-    public ResponseEntity inactivateCourse (@RequestBody String code) throws NotFoundException {
-        courseService.inactivateCourse(code);
+    public ResponseEntity inactivateCourse (@RequestBody @Valid InactivateCourseForm form) throws NotFoundException {
+        courseService.inactivateCourse(form.code());
         return ResponseEntity.ok().build();
     }
 
