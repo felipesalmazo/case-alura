@@ -9,22 +9,21 @@ import java.util.List;
 
 public interface CourseAssessmentRepository extends JpaRepository<CourseAssessment, Long> {
 
-    @Query("""
+    @Query(value = """
             SELECT new br.com.alura.techcase.api.dto.course.CourseNpsData(
-            c.name,
-            c.code,
-            c.status,
+            courses.name,
+            courses.code,
+            courses.status,
             SUM(CASE WHEN ca.assessmentGrade BETWEEN 9 AND 10 THEN 1 ELSE 0 END),
             SUM(CASE WHEN ca.assessmentGrade BETWEEN 0 AND 5 THEN 1 ELSE 0 END),
-            COUNT(ca)
+            COUNT(ca.id)
             )
             FROM
-                Course c
-                    LEFT JOIN CourseAssessment ca ON c.id = ca.course.id
-                    LEFT JOIN Enrollment e ON c.id = e.course.id
-            GROUP BY
-                c.id
-            HAVING
-                COUNT(DISTINCT e.id) > 4""")
+                (SELECT e.course.id, e.course.name, e.course.code, e.course.status
+                FROM Enrollment e
+                GROUP BY e.course.id
+                HAVING COUNT(e.id) > 4) AS courses
+            JOIN CourseAssessment ca ON ca.course.id = courses.id
+            GROUP BY ca.course.id""")
     List<CourseNpsData> getNpsDataByCourse();
 }

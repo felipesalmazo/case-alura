@@ -16,7 +16,7 @@ public class CourseAssessment {
     @Column(nullable = false)
     private Integer assessmentGrade;
     private String description;
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(optional = false)
