@@ -106,6 +106,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>tech-case-alura</finalName>
 	</build>
 
 </project>

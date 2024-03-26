@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    container_name: database
+    ports:
+      - "33006:3306"
+    networks:
+      - tech-case-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: alura
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  tech-case:
+    build: .
+    restart: unless-stopped
+    container_name: tech-case-api
+    ports:
+      - "8089:8080"
+    networks:
+      - tech-case-network
+    environment:
+      - spring.datasource.url=jdbc:mysql://db:3306/alura
+    depends_on:
+      - db
+    image: felipesalmazo/tech-case-alura:1.0
+
+networks:
+  tech-case-network:
+    driver: bridge
+
+volumes:
+  dbdata:
