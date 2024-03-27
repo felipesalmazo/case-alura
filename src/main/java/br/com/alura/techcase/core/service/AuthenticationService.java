@@ -24,11 +24,11 @@ public class AuthenticationService {
     public AuthenticationResponse login(LoginForm loginForm) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginForm.email(),
+                        loginForm.username(),
                         loginForm.password()
                 )
         );
-        var user = userRepository.findByEmail(loginForm.email()).orElseThrow();
+        var user = userRepository.findByUsername(loginForm.username()).orElseThrow();
         var jwtToken = tokenService.generateToken(user);
 
         return new AuthenticationResponse(jwtToken);

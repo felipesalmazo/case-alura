@@ -25,8 +25,8 @@ public class EnrollmentService {
     private EnrollmentRepository enrollmentRepository;
 
     public Enrollment createEnrollment(CreateEnrollmentForm form) throws NotFoundException, ValidationException {
-        var userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User with email " + userEmail + " not found."));
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User with username " + username + " not found."));
         var course = courseRepository.findCourseByStatusAndCode(Status.ACTIVE, form.courseCode()).orElseThrow(() -> new NotFoundException("Course with code " + form.courseCode() + " not found or inactive."));
         var enrollment = enrollmentRepository.findEnrollmentByUserAndCourse(user, course);
 

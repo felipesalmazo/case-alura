@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -44,12 +43,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDate creationDate;
 
-    public User(CreateUserForm form, PasswordEncoder encoder) {
+    public User(CreateUserForm form, String encodedPassword) {
         this.username = form.username();
         this.name = form.name();
         this.email = form.email();
         this.role = setRoleByString(form.role());
-        this.password = encoder.encode(form.password());
+        this.password = encodedPassword;
         this.creationDate = LocalDate.now();
     }
 
@@ -73,11 +72,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
     }
 
     @Override

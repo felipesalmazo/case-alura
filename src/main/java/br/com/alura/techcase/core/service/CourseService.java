@@ -68,8 +68,8 @@ public class CourseService {
     }
 
     public CourseAssessment courseAssessment (CourseAssessmentForm form) throws NotFoundException, ValidationException {
-        var userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User with email " + userEmail + " not found."));
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User with username " + username + " not found."));
         var course = courseRepository.findCourseByStatusAndCode(Status.ACTIVE, form.courseCode()).orElseThrow(() -> new NotFoundException("Course with code " + form.courseCode() + " not found or inactive."));
         enrollmentRepository.findEnrollmentByUserAndCourse(user, course).orElseThrow(() -> new ValidationException("The user have to be enrolled to the course to do the assessment."));
         var courseAssessment = courseAssessmentRepository.findByUserAndCourse(user, course);
