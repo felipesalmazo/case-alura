@@ -2,6 +2,7 @@ package br.com.alura.techcase.core.config;
 
 import br.com.alura.techcase.core.enums.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,11 +21,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final AuthenticationFilter authenticationFilter;
-    private final UserDetailsService userService;
+    @Autowired
+    private AuthenticationFilter authenticationFilter;
+
+    @Autowired
+    private UserDetailsService userService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
