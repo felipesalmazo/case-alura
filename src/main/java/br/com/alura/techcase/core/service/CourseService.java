@@ -72,20 +72,25 @@ public class CourseService {
         var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new NotFoundException("User with email " + userEmail + " not found."));
         var course = courseRepository.findCourseByStatusAndCode(Status.ACTIVE, form.courseCode()).orElseThrow(() -> new NotFoundException("Course with code " + form.courseCode() + " not found or inactive."));
         enrollmentRepository.findEnrollmentByUserAndCourse(user, course).orElseThrow(() -> new ValidationException("The user have to be enrolled to the course to do the assessment."));
+        var courseAssessment = courseAssessmentRepository.findByUserAndCourse(user, course);
+
+        if (courseAssessment.isPresent()) {
+            throw new ValidationException("The user have already assessed this course.");
+        }
 
         if (form.assessmentGrade() < 6 && (form.description() == null || form.description().isEmpty())) {
             throw new ValidationException("The description must be completed because the grade is equals or lower than 6.");
         }
 
-        var courseAssessment = new CourseAssessment(form, user, course);
-        courseAssessmentRepository.save(courseAssessment);
+        var newCourseAssessment = new CourseAssessment(form, user, course);
+        courseAssessmentRepository.save(newCourseAssessment);
 
         if (form.assessmentGrade() < 6) {
             String body = String.format("This course received an %d rating from a student, and this was the description of the assessment: \n %s", form.assessmentGrade(), form.description());
-            EmailSender.send(user.getEmail(), "Assessment of Course: " + course.getName(), body);
+            EmailSender.send(course.getInstructor().getEmail(), "Assessment of Course: " + course.getName(), body);
         }
 
-        return courseAssessment;
+        return newCourseAssessment;
     }
 
     public List<CourseNpsDetail> courseNps() throws NotFoundException {

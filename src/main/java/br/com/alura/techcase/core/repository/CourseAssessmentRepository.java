@@ -31,5 +31,5 @@ public interface CourseAssessmentRepository extends JpaRepository<CourseAssessme
             GROUP BY courses.course_id""")
     List<CourseNpsData> getNpsDataByCourse();
 
-    
+    Optional<CourseAssessment> findByUserAndCourse(User user, Course course);
 }
