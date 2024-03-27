@@ -89,7 +89,7 @@ public class CourseController {
                 table.addCell(item.courseName());
                 table.addCell(item.courseCode());
                 table.addCell(item.status());
-                table.addCell(item.nps().toString().split("\\.")[0]);
+                table.addCell(String.valueOf(item.nps().intValue()));
 
             }));
 
