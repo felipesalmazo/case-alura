@@ -40,7 +40,7 @@ public class CourseController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createCourse(@RequestBody @Valid CreateCourseForm form) throws ValidationException, NotFoundException {
+    public ResponseEntity<?> createCourse(@RequestBody @Valid CreateCourseForm form) throws ValidationException, NotFoundException {
         var course = courseService.createCourse(form);
         var uri = UriComponentsBuilder.newInstance()
                 .path("/api/course/create/{id}")
@@ -50,13 +50,13 @@ public class CourseController {
     }
 
     @PutMapping("/inactivate")
-    public ResponseEntity inactivateCourse (@RequestBody @Valid InactivateCourseForm form) throws NotFoundException {
+    public ResponseEntity<?> inactivateCourse (@RequestBody @Valid InactivateCourseForm form) throws NotFoundException {
         courseService.inactivateCourse(form.code());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/assessment")
-    public ResponseEntity courseAssessment(@RequestBody @Valid CourseAssessmentForm form) throws ValidationException, NotFoundException {
+    public ResponseEntity<?> courseAssessment(@RequestBody @Valid CourseAssessmentForm form) throws ValidationException, NotFoundException {
         var courseAssessment = courseService.courseAssessment(form);
         var uri = UriComponentsBuilder.newInstance()
                 .path("/api/course/assessment/{id}")

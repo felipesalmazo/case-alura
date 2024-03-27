@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody @Valid CreateUserForm form) {
+    public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserForm form) {
         var user = userService.createUser(form);
         var uri = UriComponentsBuilder.newInstance()
                 .path("/api/user/create/{id}")

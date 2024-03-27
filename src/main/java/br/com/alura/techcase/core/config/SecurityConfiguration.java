@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/course/create").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/course/inactivate").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/course/list").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/course/nps").hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

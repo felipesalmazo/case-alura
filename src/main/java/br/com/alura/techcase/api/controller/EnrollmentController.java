@@ -21,7 +21,7 @@ public class EnrollmentController {
     private EnrollmentService enrollmentService;
 
     @PostMapping("/create")
-    public ResponseEntity createEnrollment(@RequestBody @Valid CreateEnrollmentForm form) throws ValidationException, NotFoundException {
+    public ResponseEntity<?> createEnrollment(@RequestBody @Valid CreateEnrollmentForm form) throws ValidationException, NotFoundException {
         var enrollment = enrollmentService.createEnrollment(form);
         var uri = UriComponentsBuilder.newInstance()
                 .path("/api/enrollment/create/{id}")
