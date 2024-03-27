@@ -23,7 +23,8 @@ public class UserService {
     }
 
     public User createUser(CreateUserForm form) {
-        var user = new User(form, encoder);
+        var encodedPassword = encoder.encode(form.password());
+        var user = new User(form, encodedPassword);
         return userRepository.save(user);
     }
 }
